@@ -1,0 +1,44 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+
+  # Zip up the resource pack and upload to public.thisland.space
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+
+      # Check out the resource pack repo
+      - uses: actions/checkout@v3
+        with:
+          path: resource-pack
+
+      # Check out the public site repo
+      - uses: actions/checkout@v3
+        with:
+          repository: this-land-server/public
+          path: public
+
+      # Zip up the new resource pack
+      - run: rm -f public/minecraft-vanilla-resource-pack.zip
+      - run: cd resource-pack/pack && zip -r ../../public/minecraft-vanilla-resource-pack.zip .
+
+      # Set up SSH
+      - name: Write SSH keys
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H github.com > ~/.ssh/known_hosts
+
+      # Commit the public folder changes
+      - run: |
+          cd public
+          git config --global user.name "RowBot"
+          git config --global user.email "48598026+rowanbot@users.noreply.github.com"
+          git remote set-url origin "git@github.com:this-land-server/public.git"
+          git add minecraft-vanilla-resource-pack.zip
+          git commit -m "Update the Minecraft Vanilla resource pack"
+          git push origin main
