@@ -5,7 +5,7 @@ on:
       - main
 jobs:
 
-  # Zip up the resource pack and upload to public.thisland.space
+  # Zip up the resource pack and upload to the website
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
@@ -16,16 +16,16 @@ jobs:
         with:
           path: resource-pack
 
-      # Check out the public site repo
+      # Check out the website repo
       - uses: actions/checkout@v3
         with:
-          repository: this-land-server/public
-          path: public
+          repository: this-land-server/website
+          path: website
 
       # Zip up the new resource pack
-      - run: rm -f public/minecraft-vanilla-resource-pack.*
-      - run: cd resource-pack/pack && zip -r ../../public/minecraft-vanilla-resource-pack.zip .
-      - run: sha1sum public/minecraft-vanilla-resource-pack.zip | cut -d " " -f 1 > public/minecraft-vanilla-resource-pack.sha1
+      - run: rm -f website/minecraft-vanilla-resource-pack.*
+      - run: cd resource-pack/pack && zip -r ../../website/minecraft-vanilla-resource-pack.zip .
+      - run: sha1sum website/minecraft-vanilla-resource-pack.zip | cut -d " " -f 1 > website/minecraft-vanilla-resource-pack.sha1
 
       # Set up SSH
       - name: Write SSH keys
@@ -34,12 +34,12 @@ jobs:
           echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H github.com > ~/.ssh/known_hosts
 
-      # Commit the public folder changes
+      # Commit the website folder changes
       - run: |
-          cd public
+          cd website
           git config --global user.name "RowBot"
           git config --global user.email "48598026+rowanbot@users.noreply.github.com"
-          git remote set-url origin "git@github.com:this-land-server/public.git"
+          git remote set-url origin "git@github.com:this-land-server/website.git"
           git add minecraft-vanilla-resource-pack.*
           git commit -m "Update the Minecraft Vanilla resource pack"
           git push origin main

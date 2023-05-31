@@ -14,8 +14,8 @@ Custom hats etc should be bound to `minecraft:carved_pumpkin`.
 
 The resource pack itself gets deployed automatically, but the SHA1 of the created zip file needs to be manually set in the server interface. For now, ask @rowanmanning to update this.
 
-You can find the new SHA1 in the latest commit to the [public website repository](https://github.com/this-land-server/public).
+You can find the new SHA1 in the latest commit to the [website repository](https://github.com/this-land-server/website).
 
 ## Testing
 
-Before opening a PR and deploying you should test changes in a local Minecraft game. Symlink the `pack` folder into your local Minecraft instance's `resourcepacks/this-land` folder.
+Before opening a PR and deploying you should test changes in a local Minecraft world game. Symlink the `pack` folder into your local Minecraft instance's `resourcepacks/this-land` folder.
