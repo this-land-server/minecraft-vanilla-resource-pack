@@ -6,6 +6,7 @@
 		"side": "minecraft:block/pumpkin_side"
 	},
 	"overrides": [
-		{ "predicate": { "custom_model_data": 1 }, "model": "this-land:item/hats/crown" }
+		{ "predicate": { "custom_model_data": 1 }, "model": "this-land:item/hats/crown" },
+		{ "predicate": { "custom_model_data": 2 }, "model": "this-land:item/hats/straw-hat" }
 	]
 }
